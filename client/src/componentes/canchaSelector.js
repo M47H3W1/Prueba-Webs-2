@@ -1,18 +1,18 @@
 import React from 'react';
 
-const CanchaSelector = ({ fields, selectedField, onFieldSelect }) => {
+const CanchaSelector = ({ canchas, canchaSeleccionada, onCanchaSelect }) => {
   return (
-    <div className="field-selector">
-      <label htmlFor="field-select">Select a Field:</label>
+    <div className="cancha-selector">
+      <label htmlFor="cancha-select">Selecciona una cancha:</label>
       <select
-        id="field-select"
-        value={selectedField}
-        onChange={(e) => onFieldSelect(e.target.value)}
+        id="cancha-select"
+        value={canchaSeleccionada}
+        onChange={(e) => onCanchaSelect(e.target.value)}
       >
-        <option value="">--Choose a field--</option>
-        {fields.map((field) => (
-          <option key={field.id} value={field.id}>
-            {field.name}
+        <option value="">--Elige una cancha--</option>
+        {canchas.map((cancha) => (
+          <option key={cancha.id} value={cancha.id}>
+            {cancha.nombre}
           </option>
         ))}
       </select>

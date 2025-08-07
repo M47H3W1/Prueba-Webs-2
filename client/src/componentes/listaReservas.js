@@ -2,28 +2,29 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
 const ListaReservas = () => {
-  const [reservations, setReservations] = useState([]);
+  const [reservas, setReservas] = useState([]);
 
   useEffect(() => {
-    const fetchReservations = async () => {
+    const fetchReservas = async () => {
       try {
-        const response = await axios.get('/api/reservations');
-        setReservations(response.data);
+        const response = await axios.get('http://localhost:8000/api/reservas');
+        setReservas(response.data);
       } catch (error) {
-        console.error('Error fetching reservations:', error);
+        console.error('Error al obtener las reservas:', error);
       }
     };
 
-    fetchReservations();
+    fetchReservas();
   }, []);
 
   return (
     <div>
-      <h2>Reservation List</h2>
+      <h2>Lista de reservas</h2>
       <ul>
-        {reservations.map((reservation) => (
-          <li key={reservation.id}>
-            {reservation.fieldName} - {reservation.date} at {reservation.time}
+        {reservas.map((reserva) => (
+          <li key={reserva.id}>
+            Cancha: {reserva.canchaId} | Usuario: {reserva.usuarioId} | 
+            {new Date(reserva.horaInicio).toLocaleString()} - {new Date(reserva.horaFin).toLocaleString()}
           </li>
         ))}
       </ul>

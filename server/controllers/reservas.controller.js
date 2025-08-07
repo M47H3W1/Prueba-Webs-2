@@ -1,25 +1,24 @@
-const db = require('../models');
-const Reservation = db.reservation;
-const Field = db.field;
+const { Reservas, Cancha } = require('../models');
+const { Op } = require('sequelize');
 
-// Create a new reservation
+// Crear una nueva reserva
 exports.createReservation = async (req, res) => {
     try {
-        const { fieldId, startTime, endTime } = req.body;
+        const { canchaId, usuarioId, horaInicio, horaFin } = req.body;
 
-        // Validate overlapping reservations
-        const overlappingReservations = await Reservation.findAll({
+        // Validar solapamiento de reservas
+        const overlappingReservations = await Reservas.findAll({
             where: {
-                fieldId: fieldId,
-                [db.Sequelize.Op.or]: [
+                canchaId: canchaId,
+                [Op.or]: [
                     {
-                        startTime: {
-                            [db.Sequelize.Op.lt]: endTime,
+                        horaInicio: {
+                            [Op.lt]: horaFin,
                         },
                     },
                     {
-                        endTime: {
-                            [db.Sequelize.Op.gt]: startTime,
+                        horaFin: {
+                            [Op.gt]: horaInicio,
                         },
                     },
                 ],
@@ -27,22 +26,22 @@ exports.createReservation = async (req, res) => {
         });
 
         if (overlappingReservations.length > 0) {
-            return res.status(400).json({ message: 'Reservation overlaps with an existing reservation.' });
+            return res.status(400).json({ message: 'La reserva se solapa con una existente.' });
         }
 
-        const reservation = await Reservation.create({ fieldId, startTime, endTime });
-        res.status(201).json(reservation);
+        const reserva = await Reservas.create({ canchaId, usuarioId, horaInicio, horaFin });
+        res.status(201).json(reserva);
     } catch (error) {
-        res.status(500).json({ message: 'Error creating reservation', error });
+        res.status(500).json({ message: 'Error al crear la reserva', error });
     }
 };
 
-// Get all reservations
+// Obtener todas las reservas
 exports.getAllReservations = async (req, res) => {
     try {
-        const reservations = await Reservation.findAll();
-        res.status(200).json(reservations);
+        const reservas = await Reservas.findAll();
+        res.status(200).json(reservas);
     } catch (error) {
-        res.status(500).json({ message: 'Error retrieving reservations', error });
+        res.status(500).json({ message: 'Error al obtener las reservas', error });
     }
 };
