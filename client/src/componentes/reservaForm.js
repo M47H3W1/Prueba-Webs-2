@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import './reservaForm.css';
 
 const ReservaForm = () => {
   const [canchaId, setCanchaId] = useState('');
@@ -45,9 +46,9 @@ const ReservaForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="form-reserva">
       <h2>Reservar una cancha</h2>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+      {error && <p className="error">{error}</p>}
       <div>
         <label>ID de cancha:</label>
         <input

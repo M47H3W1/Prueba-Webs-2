@@ -1,4 +1,5 @@
 import React from 'react';
+import './canchaSelector.css';
 
 const CanchaSelector = ({ canchas, canchaSeleccionada, onCanchaSelect }) => {
   return (

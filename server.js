@@ -10,18 +10,25 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+const authRoutes = require('./server/routes/auth.routes');
 const reservationRoutes = require('./server/routes/reservas.routes');
+const canchasRoutes = require('./server/routes/canchas.routes');
+const authenticateToken = require('./server/middleware/authentication_mw');
 
-app.use('/api/reservas', reservationRoutes);
+// Rutas públicas
+app.use('/api/auth', authRoutes);
 
-// Wait for the database to sync, then execute the seed and start the server
+// Rutas protegidas
+app.use('/api/reservas', authenticateToken, reservationRoutes);
+app.use('/api/canchas', authenticateToken, canchasRoutes);
+
 sequelize.sync({ force: true }).then(async () => {
   console.log("Database synchronized");
   await seed();
   app.listen(port, () => {
     console.log("Server running on port: ", port);
   });
-  
 }).catch((error) => {
+  
   console.error("Error synchronizing the database", error);
 });

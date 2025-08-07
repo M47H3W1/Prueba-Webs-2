@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import './listaReservas.css';
 
 const ListaReservas = () => {
   const [reservas, setReservas] = useState([]);
@@ -18,9 +19,9 @@ const ListaReservas = () => {
   }, []);
 
   return (
-    <div>
+    <div className="lista-reservas-container">
       <h2>Lista de reservas</h2>
-      <ul>
+      <ul className="lista-reservas">
         {reservas.map((reserva) => (
           <li key={reserva.id}>
             Cancha: {reserva.canchaId} | Usuario: {reserva.usuarioId} | 
